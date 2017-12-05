@@ -8,7 +8,7 @@ int runner(FILE* f, int a[]);
 int main(int argc, char** argv)
 {
     FILE* f = fopen(argv[1], "r");
-    int a[1024];
+    int a[2048];
     int l;
     l = runner(f, a);
     printf("%d\n", solver(a,l));
