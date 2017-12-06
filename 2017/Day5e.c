@@ -27,6 +27,7 @@ int runner(FILE* f, int a[])
         a[l] = strtol(b,NULL,10);
         l++;
     }
+    free(b);
     return l;
 }
 
