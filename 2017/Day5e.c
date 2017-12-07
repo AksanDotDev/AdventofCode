@@ -28,6 +28,7 @@ int runner(FILE* f, int a[])
         l++;
     }
     free(b);
+    close(f);
     return l;
 }
 
