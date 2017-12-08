@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#define INITSIZE 128
+#define INITSIZE 1
 
 typedef struct VirtRegister
 {
