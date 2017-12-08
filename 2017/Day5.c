@@ -12,7 +12,7 @@ int main(int argc, char** argv)
     int l;
     l = runner(f, a);
     printf("%d\n", solver(a,l));
-    close(f);
+    fclose(f);
     return 0;
 }
 

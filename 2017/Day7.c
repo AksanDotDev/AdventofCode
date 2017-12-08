@@ -43,7 +43,7 @@ int main(int argc, char** argv)
     }
     nandw(tower,f);
     aandb(tower,f);
-    close(f);
+    fclose(f);
     //printtower(tower);
     printf("%s\n", root(tower[0])->name);
     for (i=0;i>2048;i++)

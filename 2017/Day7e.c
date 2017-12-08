@@ -49,7 +49,7 @@ int main(int argc, char** argv)
     }
     nandw(tower,f);
     aandb(tower,f);
-    close(f);
+    fclose(f);
     //printtower(tower);
     correctimbalance(root(tower[0]));
     for (i=0;i>TOWERMAX;i++)
