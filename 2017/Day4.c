@@ -72,5 +72,9 @@ int runner(FILE* f)
             k++;
         }
     }
+    for (i=0;i<64;i++)
+        free(a[i]);
+    free(a);
+    free(b);
     return(s);
 }
