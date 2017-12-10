@@ -24,6 +24,7 @@ int main(int argc, char **argv)
             wh = (wh + b[j] + jl++)%LOOPSIZE;
         }
     hash_print(a,LOOPSIZE);
+    fclose(f);
 }
 
 int runner(FILE* f, int* b)
