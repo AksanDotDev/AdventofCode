@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 
 int runner(FILE* f)
 {
-    int **a = malloc(SIZE*sizeof(int*));
+    char **a = malloc(SIZE*sizeof(char*));
     int r[8];
     char* b = (char*)malloc(128);
     int i, j, k, n, s, u;
@@ -31,7 +31,7 @@ int runner(FILE* f)
         exit(1);
     for (i=0;i<SIZE;i++)
     {
-        a[i] = calloc(SIZE,sizeof(int));
+        a[i] = calloc(SIZE,sizeof(char));
         if (!a[i])
             exit(1);
     }
@@ -47,24 +47,25 @@ int runner(FILE* f)
                 a[n][r[i]] = a[r[i]][n] = 1;
                 r[i] = -1;
             }
+            else 
+                break;
         a[n][n] = 1;
     }
     u = 1;
     while(u)
     {
         u = 0;
-        for (i=0;i<SIZE;i++)
-            for (j=0;j<SIZE;j++)
-            {
-                if (!a[i][j])
-                    continue;
-                for (k=0;k<SIZE;k++)
-                    if (a[j][k] && !a[i][k])
-                    {
-                        u = 1;
-                        a[i][k] = a[k][i] = 1;
-                    }
-            }
+        for (j=0;j<SIZE;j++)
+        {
+            if (!a[0][j])
+                continue;
+            for (k=0;k<SIZE;k++)
+                if (a[j][k] && !a[0][k])
+                {
+                    u = 1;
+                    a[0][k] = a[k][0] = 1;
+                }
+        }
     }
     s = 0;
     for (i=0;i<SIZE;i++)

@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 
 int runner(FILE* f)
 {
-    int **a = malloc(SIZE*sizeof(int*));
+    char **a = malloc(SIZE*sizeof(char*));
     int *s = malloc(SIZE*sizeof(int));
     int r[8];
     char* b = (char*)malloc(128);
@@ -32,7 +32,7 @@ int runner(FILE* f)
         exit(1);
     for (i=0;i<SIZE;i++)
     {
-        a[i] = calloc(SIZE,sizeof(int));
+        a[i] = calloc(SIZE,sizeof(char));
         if (!a[i])
             exit(1);
     }
@@ -48,6 +48,8 @@ int runner(FILE* f)
                 a[n][r[i]] = a[r[i]][n] = 1;
                 r[i] = -1;
             }
+            else
+                break;
         a[n][n] = 1;
     }
     u = 1;
