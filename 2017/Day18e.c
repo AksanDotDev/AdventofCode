@@ -29,7 +29,7 @@ long long int* queuetop0;
 long long int* queuetop1;
 HANDLE  hReceiving;   //rcv Mutex
 HANDLE  hEdit; //edt Mutex
-int deadlock = 0;
+int killswitch = 0;
 int totsnd = 0;
 
 
@@ -69,7 +69,7 @@ int main(int argc, char** argv)
     fclose(f);
     _beginthread(execute, 0, &init0);
     _beginthread(execute, 0, &init1);
-    while(!deadlock);
+    while(!killswitch);
     printf("%d\n", totsnd);
 }
 
@@ -296,17 +296,7 @@ void execute(void* init)
                 t = (int)WaitForSingleObject(hReceiving,1000);
                 if (t == WAIT_TIMEOUT)
                 {
-                    deadlock = 1;
-                    _endthread();
-                }
-                rcvr(rcv);
-                ReleaseMutex(hReceiving);
-                break;
-            case 12 : //rcv reg
-                t = (int)WaitForSingleObject(hReceiving,500);
-                if (t == WAIT_TIMEOUT)
-                {
-                    deadlock = 1;
+                    killswitch = 1;
                     _endthread();
                 }
                 registers[program[pc].op1] = rcvr(rcv);
@@ -335,10 +325,10 @@ void execute(void* init)
         pc++;
         if (pc < 0 || pc > l)
         {
-            deadlock = 1;
+            killswitch = 1;
             _endthread();
         }
-        if (deadlock)
+        if (killswitch)
             _endthread();
     }
     return;
