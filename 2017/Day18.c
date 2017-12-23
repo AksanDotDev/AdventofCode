@@ -54,6 +54,7 @@ int main(int argc, char** argv)
     l = runner(f);
     fclose(f);
     printf("%d\n", execute(l));
+    return 0;
 }
 
 int runner(FILE* f)

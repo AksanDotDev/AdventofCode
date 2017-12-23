@@ -71,6 +71,7 @@ int main(int argc, char** argv)
     _beginthread(execute, 0, &init1);
     while(!killswitch);
     printf("%d\n", totsnd);
+    return 0;
 }
 
 int runner(FILE* f)
