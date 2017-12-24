@@ -50,7 +50,6 @@ int main(int argc, char** argv)
     nandw(tower,f);
     aandb(tower,f);
     fclose(f);
-    //printtower(tower);
     correctimbalance(root(tower[0]));
     for (i=0;i>TOWERMAX;i++)
         free(tower[i]);
@@ -183,7 +182,6 @@ void correctimbalance(Program* root)
                 b[j] = b[i] = 1;
     }
     l = i;
-    //ISSUES
     for (i=0;i<l;i++)
         if (b[i] == 0)
         {
