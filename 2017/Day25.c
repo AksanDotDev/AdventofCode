@@ -21,6 +21,7 @@ int main(int argc, char** argv)
         exit(1);
     }
     printf("%d\n", execute());
+    free(tape);
     return 0;
 }
 
