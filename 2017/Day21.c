@@ -155,6 +155,8 @@ void runner(void)
                     h = 0;
                 }
             }
+            for (k=0;k<size;k++)
+                free(canvas[k]);
             free(canvas);
             size *= 4;
             size /= 3;
@@ -208,6 +210,8 @@ void runner(void)
                     h = 0;
                 }
             }
+            for (k=0;k<size;k++)
+                free(canvas[k]);
             free(canvas);
             size *= 3;
             size /= 2;
@@ -245,9 +249,13 @@ void runner(void)
     }
     result = 0;
     for (i=0;i<size;i++)
+    {
         for (j=0;j<size;j++)
             if (canvas[i][j] == '#')
                 result ++;
+        free(canvas[i]);
+    }
+    free(canvas);
 }
 
 pattern2 read2(int v, int h)
