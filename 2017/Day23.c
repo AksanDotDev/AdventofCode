@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#define SIZE    26
+#define SIZE    8
 
 
 typedef struct instruction{
@@ -15,10 +15,10 @@ typedef struct instruction{
 
 instruction* program;
 long long int* registers;
-// 01 snd val
-// 02 snd reg
-// 03 set reg, val
-// 04 set reg, reg
+// 01 set reg, val
+// 02 set reg, reg
+// 03 sub reg val
+// 04 sub reg reg
 // 05 add reg, val
 // 06 add reg, reg
 // 07 mul reg, val
@@ -27,10 +27,10 @@ long long int* registers;
 // 10 mod reg, reg
 // 11 rcv val
 // 12 rcv reg
-// 13 jgz val, val 
-// 14 jgz val, reg
-// 15 jgz reg, val
-// 16 jgz reg, reg
+// 13 jnz val, val 
+// 14 jnz val, reg
+// 15 jnz reg, val
+// 16 jnz reg, reg
 
 
 int runner(FILE*);
@@ -82,21 +82,23 @@ int runner(FILE* f)
         switch (buffer[0])
         {
             case 's' :
-                t = sscanf(buffer,"snd %ld", &x);
-                if (t == 1)
+                t = sscanf(buffer,"set %c %ld", &a, &y);
+                if (t == 2)
                 {
                     program[i].opcode = 1;
-                    program[i].op1 = x;
+                    program[i].op1 = (int)(a - 'a');
+                    program[i].op2 = (y);
                     break;
                 }
-                t = sscanf(buffer,"snd %c", &a);
-                if (t == 1)
+                t = sscanf(buffer,"set %c %c", &a, &b);
+                if (t == 2)
                 {
                     program[i].opcode = 2;
                     program[i].op1 = (int)(a - 'a');
+                    program[i].op2 = (int)(b - 'a');
                     break;
                 }
-                t = sscanf(buffer,"set %c %ld", &a, &y);
+                t = sscanf(buffer,"sub %c %ld", &a, &y);
                 if (t == 2)
                 {
                     program[i].opcode = 3;
@@ -104,7 +106,7 @@ int runner(FILE* f)
                     program[i].op2 = (y);
                     break;
                 }
-                t = sscanf(buffer,"set %c %c", &a, &b);
+                t = sscanf(buffer,"sub %c %c", &a, &b);
                 if (t == 2)
                 {
                     program[i].opcode = 4;
@@ -186,7 +188,7 @@ int runner(FILE* f)
                 fprintf(stderr,"Unparsed Command 'r': %s\n", buffer);
                 break;
             case 'j' :
-                t = sscanf(buffer,"jgz %ld %ld", &x, &y);
+                t = sscanf(buffer,"jnz %ld %ld", &x, &y);
                 if (t == 2)
                 {
                     program[i].opcode = 13;
@@ -194,7 +196,7 @@ int runner(FILE* f)
                     program[i].op2 = (y);
                     break;
                 }
-                t = sscanf(buffer,"jgz %ld %c", &x, &b);
+                t = sscanf(buffer,"jnz %ld %c", &x, &b);
                 if (t == 2)
                 {
                     program[i].opcode = 14;
@@ -202,7 +204,7 @@ int runner(FILE* f)
                     program[i].op2 = (int)(b - 'a');
                     break;
                 }
-                t = sscanf(buffer,"jgz %c %ld", &a, &y);
+                t = sscanf(buffer,"jnz %c %ld", &a, &y);
                 if (t == 2)
                 {
                     program[i].opcode = 15;
@@ -210,7 +212,7 @@ int runner(FILE* f)
                     program[i].op2 = (y);
                     break;
                 }
-                t = sscanf(buffer,"jgz %c %c", &a, &b);
+                t = sscanf(buffer,"jnz %c %c", &a, &b);
                 if (t == 2)
                 {
                     program[i].opcode = 16;
@@ -230,24 +232,23 @@ int runner(FILE* f)
 
 int execute(int l)
 {
-    int pc, lp;
-    lp = -1;
-    pc = 0;
-    while(1)
+    int pc, mc;
+    pc = mc = 0;
+    while(!(pc < 0 || pc >= l))
     {
         switch (program[pc].opcode)
         {
-            case 1 : //snd val
-                lp = program[pc].op1;
-                break;
-            case 2 : //snd reg
-                lp = registers[program[pc].op1];
-                break;
-            case 3 : //set reg, val
+            case 1 : //set reg, val
                 registers[program[pc].op1] = program[pc].op2;
                 break;
-            case 4 : //set reg, reg
+            case 2 : //set reg, reg
                 registers[program[pc].op1] = registers[program[pc].op2];
+                break;
+            case 3 : //sub reg val
+                registers[program[pc].op1] -= program[pc].op2;
+                break;
+            case 4 : //snd reg reg
+                registers[program[pc].op1] -= registers[program[pc].op2];
                 break;
             case 5 : //add reg, val
                 registers[program[pc].op1] += program[pc].op2;
@@ -257,9 +258,11 @@ int execute(int l)
                 break;
             case 7 : //mul reg, val
                 registers[program[pc].op1] *= program[pc].op2;
+                mc++;
                 break;
             case 8 : //mul reg, reg
                 registers[program[pc].op1] *= registers[program[pc].op2];
+                mc++;
                 break;
             case 9 : //mod reg, val
                 registers[program[pc].op1] %= program[pc].op2;
@@ -272,27 +275,25 @@ int execute(int l)
                     registers[program[pc].op1] += registers[program[pc].op2];
                 break;
             case 11 : //rcv val
-                if(program[pc].op1)
-                    return(lp);
+                fprintf(stderr, "Corrupted Command: %d\n", program[pc].opcode);
                 break;
             case 12 : //rcv reg
-                if(registers[program[pc].op1])
-                    return(lp);
+                fprintf(stderr, "Corrupted Command: %d\n", program[pc].opcode);
                 break;
-            case 13 : //jgz val, val
-                if(program[pc].op1 > 0)
+            case 13 : //jnz val, val
+                if(program[pc].op1)
                     pc += (program[pc].op2 - 1);
                 break;
-            case 14 : //jgz val, reg
-                if(program[pc].op1 > 0)
+            case 14 : //jnz val, reg
+                if(program[pc].op1)
                     pc += (registers[program[pc].op2] - 1);
                 break;
-            case 15 : //jgz reg, val
-                if(registers[program[pc].op1] > 0)
+            case 15 : //jnz reg, val
+                if(registers[program[pc].op1])
                     pc += (program[pc].op2 - 1);
                 break;
-            case 16 : //jgz reg, reg
-                if(registers[program[pc].op1] > 0)
+            case 16 : //jnz reg, reg
+                if(registers[program[pc].op1])
                     pc += (registers[program[pc].op2] - 1);
                 break;
             default :
@@ -301,5 +302,5 @@ int execute(int l)
         }
         pc++;
     }
-    return -1;
+    return mc;
 }
