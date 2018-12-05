@@ -16,7 +16,7 @@ int main(int argc, char** argv)
 int runner(FILE* f)
 {
     int n, i, j, g, l, w, r, m;
-    int a[BUFFERSIZE][61];
+    int a[BUFFERSIZE][60];
     char e[BUFFERSIZE][64];
     char s[8];
     n = 0;
