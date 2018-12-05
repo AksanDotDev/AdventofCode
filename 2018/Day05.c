@@ -20,13 +20,8 @@ int runner(FILE* f)
     n = 0;
     while(!feof(f) && n < BUFFERSIZE){
         c = fgetc(f);
-        if (n){
-            d = (p[n-1] - c) > 0 ? (p[n-1] - c) : (c - p[n-1]);
-            if (d == 32 || c == '\n'){ 
-                n--;
-            } else {
-                p[n++] = c;
-            }
+        if (n && (abs(p[n-1] - c) == 32 || c == '\n')){ 
+            n--;
         } else {
             p[n++] = c;
         }

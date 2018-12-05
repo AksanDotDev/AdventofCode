@@ -25,13 +25,8 @@ int runner(FILE* f)
             if (c == i || c == i + 32){
                 continue;
             }
-            if (n){
-                d = (p[n-1] - c) > 0 ? (p[n-1] - c) : (c - p[n-1]);
-                if (d == 32 || c == '\n'){ 
-                    n--;
-                } else {
-                    p[n++] = c;
-                }
+            if (n && (abs(p[n-1] - c) == 32 || c == '\n')){ 
+                n--;
             } else {
                 p[n++] = c;
             }
