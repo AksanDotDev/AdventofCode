@@ -28,6 +28,7 @@ int runner(FILE* f)
     node * o;
     o = createNode(f);
     s = calcNode(o);
+    freeNode(o);
     return s;
 }
 
