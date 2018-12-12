@@ -1,27 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define GENERATIONS 2048
-#define BUFFERSIZE 4096
+#define GENERATIONS 50000000000
+#define BUFFERSIZE 8192
 
 
 
 
-int runner(FILE*);
+long long int runner(FILE*);
 int main(int argc, char** argv)
 {
     FILE* f = fopen(argv[1], "r");
-    printf("%d\n", runner(f));
+    printf("%lld\n", runner(f));
     fclose(f);
     return 0;
 }
 
 
-int runner(FILE* f)
+long long int runner(FILE* f)
 {
-    int i, j, c, s;
+    int i, j, c, d;
+    long long int a;
     int e[32];
     char b[128];
     char o[128];
+    int s[BUFFERSIZE];
     char u;
     int l[BUFFERSIZE];
     int r[BUFFERSIZE];
@@ -72,19 +74,24 @@ int runner(FILE* f)
             }
             n[j] = e[c];
         }
-        s = 0;
+        s[i] = 0;
         for (j = 0; j < BUFFERSIZE; j++){
             if (n[j]){
-                s += j - BUFFERSIZE/8;
+                s[i] += j - BUFFERSIZE/8;
             }
         } 
-        printf("%d -- %d\n", i, s);
-    }
-    s = 0;
-    for (j = 0; j < BUFFERSIZE; j++){
-        if (n[j]){
-            s += j - BUFFERSIZE/8;
+        d = s[i] - s[i-1];
+        for (j = i - 2; j >= 0; j--){
+            if (s[j] != s[i] - (d * (i-j))){
+                break;
+            }
         }
-    }    
-    return s;
+        if (j < i/2 && j > 0){
+            a = GENERATIONS - 1 - i;
+            a *= d;
+            a += s[i];
+            break;
+        }
+    } 
+    return a;
 }
