@@ -2,8 +2,8 @@ target = int(input())
 raw_intcode = input()
 str_intcode = raw_intcode.split(',')
 intcode_base = list(map(int, str_intcode))
-for n in range(0, 99):
-    for v in range(0, 99):
+for n in range(0, 100):
+    for v in range(0, 100):
         intcode = list(intcode_base)
         intcode[1] = n
         intcode[2] = v
@@ -13,8 +13,8 @@ for n in range(0, 99):
             if (op == 99):
                 break
             la = intcode[intcode[i+1]]
-            lr = intcode[intcode[i+2]]
-            ta = intcode[i+3]
+            ra = intcode[intcode[i+2]]
+            tl = intcode[i+3]
             if (op == 2):
                 intcode[ta] = la * lr
             elif (op == 1):
