@@ -16,9 +16,9 @@ for n in range(0, 100):
             ra = intcode[intcode[i+2]]
             tl = intcode[i+3]
             if (op == 2):
-                intcode[ta] = la * ra
+                intcode[tl] = la * ra
             elif (op == 1):
-                intcode[ta] = la + ra
+                intcode[tl] = la + ra
             else:
                 print("Invalid code" + op)
         if (intcode[0] == target):
