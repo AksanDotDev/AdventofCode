@@ -9,12 +9,12 @@ for i in range(0, len(intcode), 4):
     if (op == 99):
         break
     la = intcode[intcode[i+1]]
-    lr = intcode[intcode[i+2]]
-    ta = intcode[i+3]
+    ra = intcode[intcode[i+2]]
+    tl = intcode[i+3]
     if (op == 2):
-        intcode[ta] = la * lr
+        intcode[tl] = la * ra
     elif (op == 1):
-        intcode[ta] = la + lr
+        intcode[tl] = la + ra
     else:
         print("Invalid code" + op)
 
