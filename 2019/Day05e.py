@@ -45,18 +45,6 @@ def em_jump_if_true(code, index, par_str):
         arg_1 = directValue(code, index + 2)
     return arg_1 if arg_0 != 0 else index + 3
 
-def em_less_than(code, index, par_str):
-    if (par_str[0] == '0'):
-        arg_0 = referencedValue(code, index + 1)
-    else:
-        arg_0 = directValue(code, index + 1)
-    if (par_str[1] == '0'):
-        arg_1 = referencedValue(code, index + 2)
-    else:
-        arg_1 = directValue(code, index + 2)
-    writeReference(code, index + 3, 1 if arg_0 < arg_1 else 0)
-    return (index + 4)
-
 def em_output(code, index, par_str):
     if (par_str[0] == '0'):
         arg_0 = referencedValue(code, index + 1)
