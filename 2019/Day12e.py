@@ -1,5 +1,6 @@
 from sys import stdin
 from itertools import product
+from math import gcd
 
 systems = [list(),list(),list()]
 combinations = [(x,y) for x in range(0,4) for y in range(0,4) if x < y]
@@ -12,14 +13,13 @@ for raw_line in stdin:
     systems[2].append((int(split_line[2].lstrip()[2:]),0))
 
 def solve_system(system):
-    states = list()
-    while (system not in states):
-        states.append(system[:])
+    base_state = system[:]
+    i = 1
+    sim_sys_step(system)
+    while (system != base_state):
         sim_sys_step(system)
-    offset = states.index(system)
-    loop = len(states) - offset
-
-    return (offset, loop)
+        i += 1
+    return i
 
 def sim_sys_step(system):
     for combination in combinations:
@@ -32,24 +32,14 @@ def sim_sys_step(system):
         p,v = system[i]
         system[i] = (p+v, v)
 
+def lcm(a, b):
+    return abs(a*b) // gcd(a, b)
+
 solutions = list()
 
-determining_loop = 0
 for i in range(0,3):
     sol = solve_system(systems[i])
     solutions.append(sol)
-    if (sol[1] > determining_loop):
-        determining_loop = sol[1]
-        determining_solution = sol
 
-searching = True
-step = determining_solution[1]
-i = determining_solution[0] 
-while(searching):
-    i += step
-    if ((i - solutions[0][0]) % solutions[0][1] == 0 and (i - solutions[1][0]) % solutions[1][1] == 0 and (i - solutions[2][0]) % solutions[2][1] == 0):
-        searching = False
-    
-
-print(i)
+print(lcm(lcm(solve_system(systems[0]), solve_system(systems[1])), solve_system(systems[2])))
 
