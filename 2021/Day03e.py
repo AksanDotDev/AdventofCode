@@ -22,11 +22,13 @@ with open("Input03.txt") as raw:
     oxygen = []
     co2 = []
     for i in range(len(binary_arrays[0])):
+        
         total = 0
         filtered = list(filter(lst_cmp(oxygen), binary_arrays))
         for array in filtered:
             total += array[i]
         oxygen.append(s_rnd(total/(len(filtered))))
+
         total = 0
         filtered = list(filter(lst_cmp(co2), binary_arrays))
         for array in filtered:
