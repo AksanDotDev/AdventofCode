@@ -31,21 +31,20 @@ with open("Input04.txt") as raw:
 
     n = len(lines)//6
     boards = []
-    playing = []
+    complete = []
     for i in range(n):
         rows = []
         for j in range(5):
             rows.append(list(map(int, lines[2+(i*6)+j].split())))
         boards.append(rows)
-        playing.append(True)
+        complete.append(False)
 
-    w = 0
     for draw in drawn:
         for i, board in enumerate(boards):
-            update_board(draw, board)
-            if check_board(board) and playing[i]:
-                w += 1
-                playing[i] = False
-                if w == n:
-                    print(sum_board(board)*draw)
-                    exit(0)
+            if not complete[i]:
+                update_board(draw, board)
+                if check_board(board):
+                    complete[i] = True
+                    if all(complete):
+                        print(sum_board(board)*draw)
+                        exit(0)
