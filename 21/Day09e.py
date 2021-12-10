@@ -13,7 +13,7 @@ def gen_options(point, basin, data):
         options.append((i+1, j))
     if j + 1 < m and (i, j+1) not in basin and data[i][j+1] != 9:
         options.append((i, j+1))
-    
+
     return options
 
 
