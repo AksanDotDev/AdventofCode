@@ -1,3 +1,5 @@
 *.txt
 *.exe
 .vscode/settings.json
+
+__pycache__/
