@@ -83,13 +83,13 @@ def part_two(x):
     if isinstance(x, AoCDir):
         if x.size > goal:
             local_sol = x
-            potential_sols = list(filter(
+            potential_sols = filter(
                 lambda x: x is not None,
                 map(
                     part_two,
                     x.children.values()
                 )
-            ))
+            )
             for sol in potential_sols:
                 if sol.size <= local_sol.size:
                     local_sol = sol
