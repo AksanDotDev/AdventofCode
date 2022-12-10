@@ -13,7 +13,7 @@ def print_crt():
     if x - clock in [-2, -1, 0]:
         print("#", end="")
     else:
-        print(".", end="")
+        print(" ", end="")
     clock += 1
     if clock % 40 == 1:
         clock = 1
