@@ -11,7 +11,7 @@ clock = 1
 def print_crt():
     global clock
     if x - clock in [-2, -1, 0]:
-        print("#", end="")
+        print("█", end="")
     else:
         print(" ", end="")
     clock += 1
