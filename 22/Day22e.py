@@ -1,4 +1,5 @@
 import sys
+from functools import cache
 
 
 with open(sys.argv[1]) as file:
@@ -134,6 +135,7 @@ def get_face_to_face(x, y, d):
     raise Exception("Panic!")
 
 
+@cache
 def get_next_tile(x, y, d):
     if d == 0:
         pot = board.get((x + 1, y), 0)

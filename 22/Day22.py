@@ -1,4 +1,5 @@
 import sys
+from functools import cache
 
 
 with open(sys.argv[1]) as file:
@@ -20,6 +21,7 @@ for i, line in enumerate(raw[:-2]):
             raise Exception("Panic!")
 
 
+@cache
 def get_next_tile(x, y, d):
     if d == 0:
         if board.get((x + 1, y), 0) == 0:
