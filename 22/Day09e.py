@@ -1,4 +1,5 @@
 import sys
+from functools import cache
 
 with open(sys.argv[1]) as file:
     raw = map(lambda x: x.split(), file.readlines())
@@ -35,6 +36,7 @@ head_moves = {
 }
 
 
+@cache
 def generate_move(s):
     if abs(s.x) < 2 and abs(s.y) < 2:
         return Coord(0, 0)
